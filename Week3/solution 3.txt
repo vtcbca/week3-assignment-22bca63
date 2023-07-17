@@ -1,0 +1,184 @@
+Write a python script to perform CRUD operation on following table of "ESM.db" database.
+
+Employee ( eid, ename, dept, basic, branch). eid must be primary key.
+
+Department : Account, Inventory, IT, HR.
+
+Peform Following Operation.
+
+1. Create table
+-->
+	import sqlite3 as sqlite
+	con=sqlite.connect("c:\\sqlite3\\ems.db")
+	c="create table employee(eid int primary key,ename text,dept text,basic int,branch text)"
+	cur=con.cursor()
+	cur.execute(c)
+	con.commit()
+	con.close()
+
+2. Insert 5 Records directly, 5 records using tuple and 5 records using taking input from user.
+-->
+	import sqlite3 as sqlite
+	con=sqlite.connect("c:\\sqlite3\\ems.db")
+	cur=con.cursor()
+	#insert record directly
+	cur.execute('''insert into employee values(1,'Om','Account',5000,'surat')''')
+	cur.execute('''insert into employee values(2,'Sai','Inventory',6000,'vyara')''')
+	cur.execute('''insert into employee values(3,'Ram','HR',9000,'bardoli')''')
+	cur.execute('''insert into employee values(4,'Krishna','IT',10000,'valsad')''')
+	cur.execute('''insert into employee values(5,'Dev','HR',8000,'vyara')''')
+	con.commit()
+	# insert record using tuple
+	r=[(6,'Zeel','Account',8500,'vesu'),
+   	     (7,'Margi','IT',9500,'vyara'),
+   	     (8,'Nidhi','HR',7000,'surat'),
+	     (9,'Kunj','Inventory',8600,'bardoli'),
+  	    (10,'Megh','HR',7500,'vyara')]
+	i1="insert into employee values(?,?,?,?,?)"
+	cur.executemany(i1,r)
+	con.commit()
+	# insert record through user input
+	i2="insert into employee values(?,?,?,?,?)"
+	l=[]
+	for a in range(5):
+    		n=int(input("Enter emp id:"))
+    		name=input("Enter emp name:")
+    		dep=input("Enter emp department:")
+    		basic=int(input("Enter emp basic:"))
+   		 branch=input("Enter emp branch")
+    		t=(n,name,dep,basic,branch)
+    		l.append(t)
+	cur.executemany(i2,l)
+	con.commit()
+	con.close()
+
+3. Update records who are from "Surat" branch with increment in salary 10%.
+-->	
+	import sqlite3 as sqlite
+	con=sqlite.connect("c:\\sqlite3\\ems.db")
+	u="update employee set basic=basic+(basic*10)/100 where branch='surat'"
+	cur=con.cursor()
+	cur.execute(u)
+	con.commit()
+	con.close()
+	
+4. Print All records.
+-->
+	import sqlite3 as sqlite
+	con=sqlite.connect("c:\\sqlite3\\ems.db")
+	s="select * from employee"
+	cur=con.cursor()
+	cur.execute(s)
+	r=cur.fetchall()
+	for i in range(len(r)):
+    		print("emp id:",(r[i][0]))
+    		print("emp name:",(r[i][1]))
+    		print("emp dept:",(r[i][2]))
+    		print("emp basic:",(r[i][3]))
+    		print("emp branch:",(r[i][4]))
+	con.commit()
+	con.close()
+
+5. Print records where dept is "HR" and "IT".
+-->
+	import sqlite3 as sqlite
+	con=sqlite.connect("c:\\sqlite3\\ems.db")
+	a="select * from employee where dept in('HR','IT')"
+	cur=con.cursor()
+	cur.execute(a)
+	r=cur.fetchall()
+	for i in range(len(r)):
+    		print("emp id:",(r[i][0]))
+    		print("emp name:",(r[i][1]))
+    		print("emp dept:",(r[i][2]))
+   		print("emp basic:",(r[i][3]))
+    		print("emp branch:",(r[i][4]))
+	con.commit()
+	con.close()
+
+6. Print records in sorting order of department.
+-->
+	import sqlite3 as sqlite
+	con=sqlite.connect("c:\\sqlite3\\ems.db")
+	b="select * from employee order by dept"
+	cur=con.cursor()
+	cur.execute(b)
+	r=cur.fetchall()
+	for i in range(len(r)):
+   	 print("emp id:",(r[i][0]))
+    	print("emp name:",(r[i][1]))
+    	print("emp dept:",(r[i][2]))
+   	 print("emp basic:",(r[i][3]))
+    	print("emp branch:",(r[i][4]))
+	con.commit()
+	con.close()
+
+7. Print records where basic is >6000.
+-->
+	import sqlite3 as sqlite
+	con=sqlite.connect("c:\\sqlite3\\ems.db")
+	b="select * from employee where basic>6000"
+	cur=con.cursor()
+	cur.execute(b)
+	r=cur.fetchall()
+	for i in range(len(r)):
+    	print("emp id:",(r[i][0]))
+    	print("emp name:",(r[i][1]))
+   	 print("emp dept:",(r[i][2]))
+    	print("emp basic:",(r[i][3]))
+    	print("emp branch:",(r[i][4]))
+	con.commit()
+	con.close()
+
+8. Print records whrere employee name second character is "r".
+-->
+	import sqlite3 as sqlite
+	con=sqlite.connect("c:\\sqlite3\\ems.db")
+	v="select * from employee where ename like'_r%'"
+	cur=con.cursor()
+	cur.execute(v)
+	r=cur.fetchall()
+	for i in range(len(r)):
+    		print("emp id:",(r[i][0]))
+    		print("emp name:",(r[i][1]))
+   		 print("emp dept:",(r[i][2]))
+    		print("emp basic:",(r[i][3]))
+   		 print("emp branch:",(r[i][4]))
+	con.commit()
+	con.close()
+
+9. Grouping record of employee who are from "Account" and "Inventory".
+-->
+	import sqlite3 as sqlite
+	con=sqlite.connect("c:\\sqlite3\\ems.db")
+	z="select * from employee where dept in('Account','Inventory') group by dept"
+	cur=con.cursor()
+	cur.execute(z)
+	r=cur.fetchall()
+	for i in range(len(r)):
+    		print("emp id:",(r[i][0]))
+    		print("emp name:",(r[i][1]))
+    		print("emp dept:",(r[i][2]))
+    		print("emp basic:",(r[i][3]))
+    		print("emp branch:",(r[i][4]))
+	con.commit()
+	con.close()
+
+10. Print all records based on branch name in descending order.
+-->
+	import sqlite3 as sqlite
+	con=sqlite.connect("c:\\sqlite3\\ems.db")
+	m="select * from employee order by dept desc"
+	cur=con.cursor()
+	cur.execute(m)
+	r=cur.fetchall()
+	for i in range(len(r)):
+    		print("emp id:",(r[i][0]))
+    		print("emp name:",(r[i][1]))
+    		print("emp dept:",(r[i][2]))
+    		print("emp basic:",(r[i][3]))
+   		print("emp branch:",(r[i][4]))
+	con.commit()
+	con.close()
+
+
